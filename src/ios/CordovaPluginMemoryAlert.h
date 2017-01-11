@@ -17,12 +17,6 @@
 #import <Cordova/CDVPlugin.h>
 
 @interface CordovaPluginMemoryAlert : CDVPlugin {
-    BOOL activated;
-    NSString *memoryWarningEventName;
-    NSString *escapedMemoryWarningEventName;
 }
-
-- (void)activate:(CDVInvokedUrlCommand*)command;
-- (void)setEventName:(CDVInvokedUrlCommand*)command;
 
 @end

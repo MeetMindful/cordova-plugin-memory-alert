@@ -19,46 +19,11 @@
 
 @implementation CordovaPluginMemoryAlert
 
-- (void)pluginInitialize
-{
-    activated = FALSE;
-    memoryWarningEventName = @"cordova-plugin-memory-alert.memoryWarning";
-    escapedMemoryWarningEventName = [memoryWarningEventName stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"];
-}
-
-- (void)activate:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* pluginResult = nil;
-    activated = [[command argumentAtIndex:0] boolValue];
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    NSLog(@"cordova-plugin-memory-alert: %@", activated ? @"activated" : @"disabled");
-}
-
-- (void)setEventName:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* pluginResult = nil;
-    NSString *eventName = [command.arguments objectAtIndex:0];
-
-    if (eventName != nil && [eventName length] > 0) {
-        memoryWarningEventName = eventName;
-        escapedMemoryWarningEventName = [memoryWarningEventName stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"];
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        NSLog(@"cordova-plugin-memory-alert: setting event name to %@", memoryWarningEventName);
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-        NSLog(@"cordova-plugin-memory-alert: unable to set event name");
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
 - (void)onMemoryWarning
 {
-    if (!activated) return;
-    NSString *jsCommand = [@[@"cordova.fireWindowEvent('", escapedMemoryWarningEventName, @"');"] componentsJoinedByString:@""];
+    NSString *jsCommand = @"cordova.fireWindowEvent('cordovaMemoryWarning');"
     [self.commandDelegate evalJs:jsCommand];
-    NSLog(@"cordova-plugin-memory-alert: did received a memory warning, emitting `%@` on window", memoryWarningEventName);
+    NSLog(@"cordova-plugin-memory-alert: received a memory warning, emitting on window");
 }
 
 @end
