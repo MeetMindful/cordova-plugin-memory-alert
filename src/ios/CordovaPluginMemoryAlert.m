@@ -21,7 +21,7 @@
 
 - (void)onMemoryWarning
 {
-    NSString *jsCommand = @"cordova.fireWindowEvent('cordovaMemoryWarning');"
+    NSString *jsCommand = @"cordova.fireWindowEvent('cordovaMemoryWarning');";
     [self.commandDelegate evalJs:jsCommand];
     NSLog(@"cordova-plugin-memory-alert: received a memory warning, emitting on window");
 }
